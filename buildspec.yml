@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing Meteor
+      - curl https://install.meteor.com/ | sh
+  pre_build:
+    commands:
+      - echo Displaying folder structure
+      - ls
+  build:
+    commands:
+      - echo Build started on `date`
+      - whoami
+      - meteor npm i --production
+      - sudo chown -Rh root .meteor/local
+      - mkdir ../temp
+      - meteor build ../temp --architecture os.linux.x86_64 --allow-superuser --directory
+      - cd ../temp/bundle/programs/server && npm install --production
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - cd ../../..
+      - pwd
+      - ls -a
+artifacts:
+  files:
+    - './**/*'
